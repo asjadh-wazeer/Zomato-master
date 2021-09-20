@@ -1,5 +1,6 @@
 // Libraries
 import express from "express";
+import passport from 'passport'
 
 // Database Schema
 import { OrderModel } from "../../database/allModels";
@@ -13,7 +14,7 @@ Params          _id
 Access          Public
 Method          GET
 */
-Router.get("/:_id", async (req, res) => {
+Router.get("/:_id", passport.authenticate('jwt', {session: false})  , async (req, res) => {
     try {
         const { _id } = req.params;
 
@@ -36,7 +37,7 @@ Params          _id
 Access          Public
 Method          POST
 */
-Router.post("/new/:_id", async (req, res) => {
+Router.post("/new/:_id", passport.authenticate('jwt', {session: false}) , async (req, res) => {
     try {
         const { _id } = req.params;
         const { orderDetails } = req.body;
