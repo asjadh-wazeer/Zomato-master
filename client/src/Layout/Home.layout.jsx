@@ -1,5 +1,6 @@
 import React from "react";
 import FoodTab from "../Components/FoodTabs";
+import { useParams } from "react-router";
 
 //Components
 import Navbar from "../Components/Navbar";
