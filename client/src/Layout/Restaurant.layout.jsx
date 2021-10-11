@@ -1,14 +1,14 @@
 // Library
 import React, { useState } from "react";
+import { TiStarOutline } from "react-icons/ti";
+import { RiDirectionLine, RiShareForwardLine } from "react-icons/ri";
+import { BiBookmarkPlus } from "react-icons/bi";
 
 // Components
 import RestaurantNavbar from "../Components/Navbar/RestaurantNavbar";
 import ImageGrid from "../Components/Restaurant/ImageGrid";
 import RestaurantInfo from "../Components/Restaurant/RestaurantInfo";
 import InfoButtons from "../Components/Restaurant/InfoButtons";
-import { TiStarOutline } from "react-icons/ti";
-import { RiDirectionLine, RiShareForwardLine } from "react-icons/ri";
-import { BiBookmarkPlus } from "react-icons/bi";
 import Tabs from "../Components/Restaurant/Tabs";
 import CartContainer from "../Components/Cart/CartContainer";
 

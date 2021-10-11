@@ -6,30 +6,30 @@ import { RestaurantModel } from "../../database/allModels";
 
 // Validation
 import {
-    ValidateRestaurantCity,
-    ValidateRestaurantSearchString,
+  ValidateRestaurantCity,
+  ValidateRestaurantSearchString,
 } from "../../validation/restaurant";
 import { ValidateRestaurantId } from "../../validation/food";
 
 const Router = express.Router();
 
 /*
-Route           /restaurant
+Route           /restaurant/?city=
 Des             Get all the restaurant details based on the city name
 Params          none
 Access          Public
 Method          GET
 */
 Router.get("/", async (req, res) => {
-    try {
-        await ValidateRestaurantCity(req.query);
-        const { city } = req.query;
-        const restaurants = await RestaurantModel.find({ city });
+  try {
+    await ValidateRestaurantCity(req.query);
+    const { city } = req.query;
+    const restaurants = await RestaurantModel.find({ city });
 
-        return res.json({ restaurants });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
+    return res.json({ restaurants });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 /*
@@ -40,20 +40,20 @@ Access          Public
 Method          GET
 */
 Router.get("/:_id", async (req, res) => {
-    try {
-        await ValidateRestaurantId(req.params);
-        const { _id } = req.params;
+  try {
+    await ValidateRestaurantId(req.params);
+    const { _id } = req.params;
 
-        const restaurant = await RestaurantModel.findById(_id);
+    const restaurant = await RestaurantModel.findById(_id);
 
-        if (!restaurant) {
-            return res.status(404).json({ error: "Restaurant Not Found" });
-        }
-
-        return res.json({ restaurant });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
+    if (!restaurant) {
+      return res.status(404).json({ error: "Restaurant Not Found" });
     }
+
+    return res.json({ restaurant });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 /*
@@ -64,24 +64,24 @@ Access          Public
 Method          GET
 */
 Router.get("/search", async (req, res) => {
-    try {
-        await ValidateRestaurantSearchString(req.body);
-        const { searchString } = req.body;
+  try {
+    await ValidateRestaurantSearchString(req.body);
+    const { searchString } = req.body;
 
-        const restaurants = await RestaurantModel.find({
-            name: { $regex: searchString, $options: "i" },
-        });
+    const restaurants = await RestaurantModel.find({
+      name: { $regex: searchString, $options: "i" },
+    });
 
-        if (!restaurants) {
-            return res
-                .status(404)
-                .json({ error: `No restaurant matched with ${searchString}` });
-        }
-
-        return res.json({ restaurants });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
+    if (!restaurants) {
+      return res
+        .status(404)
+        .json({ error: `No restaurant matched with ${searchString}` });
     }
+
+    return res.json({ restaurants });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 export default Router;
