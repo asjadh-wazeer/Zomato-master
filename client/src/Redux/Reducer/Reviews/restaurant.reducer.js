@@ -1,21 +1,20 @@
-import { GET_RESTAURANT, GET_SPECIFIC_RESTAURANT } from "./restaurant.type";
+import { GET_REVIEWS, POST_REVIEWS } from "./restaurant.type";
 
 const initialState = {
-  restaurants: [],
-  selectedRestaurant: {},
+  reviews: [],
 };
 
 const restaurantReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_RESTAURANT:
+    case GET_REVIEWS:
       return {
         ...state,
-        restaurants: action.payload,
+        reviews: action.payload,
       };
-    case GET_SPECIFIC_RESTAURANT:
+    case POST_REVIEWS:
       return {
         ...state,
-        selectedRestaurant: action.payload,
+        reviews: [...state.reviews, action.payload],
       };
     default:
       return {
