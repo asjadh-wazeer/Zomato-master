@@ -1,10 +1,10 @@
-import { GET_REVIEWS, POST_REVIEWS } from "./restaurant.type";
+import { GET_REVIEWS, POST_REVIEWS } from "./reviews.type";
 
 const initialState = {
   reviews: [],
 };
 
-const restaurantReducer = (state = initialState, action) => {
+const reviewReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_REVIEWS:
       return {
@@ -23,4 +23,4 @@ const restaurantReducer = (state = initialState, action) => {
   }
 };
 
-export default restaurantReducer;
+export default reviewReducer;

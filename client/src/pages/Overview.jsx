@@ -14,38 +14,14 @@ import MapView from "../Components/Restaurant/Mapview";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import { getImage } from "../Redux/Reducer/Image/Image.action";
+import { getReviews } from "../Redux/Reducer/Reviews/reviews.action";
 
 function Overview() {
   const { id } = useParams();
   const dispatch = useDispatch();
 
   const [menuImage, setMenuImages] = useState([]);
-  const [Reviews, setReviews] = useState([
-    {
-      userName: "Aditya",
-      isRestaurantReview: true,
-      createdAt: "2020-06-01T12:00:00.000Z",
-      reviewText: "This place is a must visit.",
-    },
-    {
-      userName: "Ira",
-      isRestaurantReview: true,
-      createdAt: "2020-06-01T12:00:00.000Z",
-      reviewText: "This place is a must visit.",
-    },
-    {
-      userName: "Kushagra",
-      isRestaurantReview: false,
-      createdAt: "2020-06-01T12:00:00.000Z",
-      reviewText: "This place is a must visit.",
-    },
-    {
-      userName: "Ira",
-      isRestaurantReview: false,
-      createdAt: "2020-06-01T12:00:00.000Z",
-      reviewText: "This place is a must visit.",
-    },
-  ]);
+  const [Reviews, setReviews] = useState([]);
 
   const reduxState = useSelector(
     (globalStore) => globalStore.restaurant.selectedRestaurant.restaurant
@@ -58,6 +34,9 @@ function Overview() {
         data.payload.image.images.map(({ location }) => images.push(location));
         setMenuImages(images);
         console.log(images);
+      });
+      dispatch(getReviews(reduxState?._id)).then((data) => {
+        setReviews(data.payload.reviews);
       });
     }
   }, [reduxState]);
