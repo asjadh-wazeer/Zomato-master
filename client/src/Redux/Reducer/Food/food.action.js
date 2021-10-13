@@ -21,7 +21,7 @@ export const getFoodList = (menuId) => async (dispatch) => {
       method: "GET",
       url: `http://localhost:4000/menu/list/${menuId}`,
     });
-    return dispatch({ type: GET_FOOD_LIST, payload: Meun.data });
+    return dispatch({ type: GET_FOOD_LIST, payload: Menu.data });
   } catch (error) {
     return dispatch({ type: "ERROR", payload: error });
   }
