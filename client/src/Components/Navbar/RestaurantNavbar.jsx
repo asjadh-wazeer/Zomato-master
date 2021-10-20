@@ -12,7 +12,8 @@ import Signup from "../Auth/SignUp";
 import Signin from "../Auth/SignIn";
 
 // Redux
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { signOut } from "../../Redux/Reducer/Auth/auth.action";
 
 function MobileNav({
   user,
@@ -21,8 +22,10 @@ function MobileNav({
   SignIn,
   SignUp,
 }) {
-  const reduxState = useSelector((globalStore) => globalStore.user.user);
-
+  const dispatch = useDispatch();
+  const signOutHandler = () => {
+    dispatch(signOut());
+  };
   return (
     <>
       <div className="flex w-full items-center justify-between lg:hidden">
@@ -38,7 +41,7 @@ function MobileNav({
           <button className="bg-zomato-400 text-white py-2 px-3 rounded-full ">
             Use App
           </button>
-          {reduxState?.user?.fullName ? (
+          {user?.user?.fullName ? (
             <>
               <div
                 onClick={() => setIsDropdownOpen((prev) => !prev)}
@@ -52,7 +55,7 @@ function MobileNav({
               </div>
               {isDropdownOpen && (
                 <div className="absolute top-16 right-1 shadow-lg py-3 pl-3 pr-3 w-32 bg-white z-30 flex-col gap-2 border-2 border-gray-300 rounded">
-                  <button>Sign Out</button>
+                  <button onClick={signOutHandler}>Sign Out</button>
                 </div>
               )}
             </>
@@ -79,7 +82,10 @@ function MobileNav({
 }
 
 function LargeNav({ user, isDropdownOpen, setIsDropdownOpen, SignIn, SignUp }) {
-  const reduxState = useSelector((globalStore) => globalStore.user.user);
+  const dispatch = useDispatch();
+  const signOutHandler = () => {
+    dispatch(signOut());
+  };
   return (
     <>
       <div className="hidden lg:inline container px-32 mx-auto">
@@ -112,7 +118,7 @@ function LargeNav({ user, isDropdownOpen, setIsDropdownOpen, SignIn, SignUp }) {
               />
             </div>
           </div>
-          {reduxState?.user?.fullName ? (
+          {user?.user?.fullName ? (
             <div className="relative w-14">
               <div
                 onClick={() => setIsDropdownOpen((prev) => !prev)}
@@ -125,7 +131,7 @@ function LargeNav({ user, isDropdownOpen, setIsDropdownOpen, SignIn, SignUp }) {
               </div>
               {isDropdownOpen && (
                 <div className="absolute top-20 shadow-lg py-3 pl-3 pr-3 w-32 bg-white z-30 flex-col gap-2 border-2 border-gray-300 rounded">
-                  <button>Signup</button>
+                  <button onClick={signOutHandler}>Sign Out</button>
                 </div>
               )}
             </div>
@@ -152,6 +158,7 @@ function LargeNav({ user, isDropdownOpen, setIsDropdownOpen, SignIn, SignUp }) {
 }
 
 function RestaurantNavbar() {
+  const reduxState = useSelector((globalStore) => globalStore.user.user);
   const [openSignup, setOpenSignup] = useState(false);
   const [openSignin, setOpenSignin] = useState(false);
 
@@ -170,12 +177,14 @@ function RestaurantNavbar() {
           setIsDropdownOpen={setIsDropdownOpen}
           SignIn={openSignInModal}
           SignUp={openSignUpModal}
+          user={reduxState}
         />
         <LargeNav
           isDropdownOpen={isDropdownOpen}
           setIsDropdownOpen={setIsDropdownOpen}
           SignIn={openSignInModal}
           SignUp={openSignUpModal}
+          user={reduxState}
         />
       </nav>
     </>

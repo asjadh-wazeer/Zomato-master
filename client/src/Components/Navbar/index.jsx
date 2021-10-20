@@ -10,6 +10,10 @@ import { RiSearch2Line } from "react-icons/ri";
 import SignUp from "../Auth/SignUp";
 import SignIn from "../Auth/SignIn";
 
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+import { signOut } from "../../Redux/Reducer/Auth/auth.action";
+
 function MobileNav({
   user,
   isDropdownOpen,
@@ -17,6 +21,10 @@ function MobileNav({
   signIn,
   signUp,
 }) {
+  const dispatch = useDispatch();
+  const signOutHandler = () => {
+    dispatch(signOut());
+  };
   return (
     <>
       <div className="flex w-full items-center justify-between lg:hidden">
@@ -31,7 +39,7 @@ function MobileNav({
           <button className="bg-zomato-400 text-white py-2 px-3 rounded-full ">
             Use App
           </button>
-          {user ? (
+          {user?.user?.fullName ? (
             <>
               <div
                 onClick={() => setIsDropdownOpen((prev) => !prev)}
@@ -45,7 +53,7 @@ function MobileNav({
               </div>
               {isDropdownOpen && (
                 <div className="absolute top-16 right-1 shadow-lg py-3 pl-3 pr-3 w-32 bg-white z-30 flex-col gap-2 border-2 border-gray-300 rounded">
-                  <button>Sign Out</button>
+                  <button onClick={signOutHandler}>Sign Out</button>
                 </div>
               )}
             </>
@@ -60,7 +68,7 @@ function MobileNav({
               {isDropdownOpen && (
                 <div className="absolute shadow-lg py-3  -bottom-20 -right-4 w-full bg-white flex flex-col gap-2">
                   <button onClick={signIn}>Sign In</button>
-                  <button onClick={signUp}>Sign Out</button>
+                  <button onClick={signUp}>Sign Up</button>
                 </div>
               )}
             </>
@@ -72,6 +80,10 @@ function MobileNav({
 }
 
 function LargeNav({ user, isDropdownOpen, setIsDropdownOpen, signIn, signUp }) {
+  const dispatch = useDispatch();
+  const signOutHandler = () => {
+    dispatch(signOut());
+  };
   return (
     <>
       <div className="hidden lg:inline container px-32 mx-auto">
@@ -104,7 +116,7 @@ function LargeNav({ user, isDropdownOpen, setIsDropdownOpen, signIn, signUp }) {
               />
             </div>
           </div>
-          {user ? (
+          {user?.user?.fullName ? (
             <div className="relative w-14">
               <div
                 onClick={() => setIsDropdownOpen((prev) => !prev)}
@@ -117,7 +129,7 @@ function LargeNav({ user, isDropdownOpen, setIsDropdownOpen, signIn, signUp }) {
               </div>
               {isDropdownOpen && (
                 <div className="absolute top-20 shadow-lg py-3 pl-3 pr-3 w-32 bg-white z-30 flex-col gap-2 border-2 border-gray-300 rounded">
-                  <button>Logout</button>
+                  <button onClick={signOutHandler}>Sign Out</button>
                 </div>
               )}
             </div>
@@ -144,6 +156,7 @@ function LargeNav({ user, isDropdownOpen, setIsDropdownOpen, signIn, signUp }) {
 }
 
 function Navbar() {
+  const reduxState = useSelector((globalStore) => globalStore.user.user);
   const [user, setUser] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [openSignup, setOpenSignup] = useState(false);
@@ -164,14 +177,14 @@ function Navbar() {
 
       <nav className="p-4 flex bg-white shadow-md lg:shadow-none w-full items-center">
         <MobileNav
-          user={user}
+          user={reduxState}
           isDropdownOpen={isDropdownOpen}
           setIsDropdownOpen={setIsDropdownOpen}
           signIn={openSignInModal}
           signUp={openSignUpModal}
         />
         <LargeNav
-          user={user}
+          user={reduxState}
           isDropdownOpen={isDropdownOpen}
           setIsDropdownOpen={setIsDropdownOpen}
           signIn={openSignInModal}
