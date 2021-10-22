@@ -16,6 +16,12 @@ function FoodItem(props) {
 
   const dispatch = useDispatch();
 
+  // useEffect(() => {
+  //   if (reduxState.length != 0) {
+  //     setFood((prev) => ({ ...prev, isAddedToCart: true }));
+  //   }
+  // }, [reduxState]);
+
   useEffect(() => {
     console.log(props);
     dispatch(getFood(props._id)).then((data) => {
@@ -27,13 +33,6 @@ function FoodItem(props) {
       });
     });
   }, []);
-
-  useEffect(() => {
-    if (reduxState.length != 0) {
-      setFood((prev) => ({ ...prev, isAddedToCart: true }));
-      console.log(food);
-    }
-  }, [reduxState]);
 
   const addFoodToCart = () => {
     dispatch(addCart({ ...food, quantity: 1, totalPrice: food.price }));

@@ -76,7 +76,7 @@ export const incQty = (foodId) => async (dispatch) => {
       food._id === foodId
         ? {
             ...food,
-            duantity: food.quantity + 1,
+            quantity: food.quantity + 1,
             totalPrice: food.price * (food.quantity + 1),
           }
         : food
@@ -103,7 +103,7 @@ export const decQty = (foodId) => async (dispatch) => {
       food._id === foodId
         ? {
             ...food,
-            duantity: food.quantity - 1,
+            quantity: food.quantity - 1,
             totalPrice: food.price * (food.quantity - 1),
           }
         : food

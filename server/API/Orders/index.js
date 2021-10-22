@@ -41,31 +41,36 @@ Params          _id
 Access          Public
 Method          POST
 */
-Router.post(
-  "/new/:_id",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    try {
-      const { _id } = req.params;
-      const { orderDetails } = req.body;
+Router.post("/new", passport.authenticate("jwt"), async (req, res) => {
+  try {
+    const { _id } = req.session.passport.user._doc;
+    const { orderDetails } = req.body;
 
-      const addNewOrder = await OrderModel.findOneAndUpdate(
-        {
-          user: _id,
-        },
-        {
-          $push: { orderDetails },
-        },
-        {
-          new: true,
-        }
-      );
+    const addNewOrder = await OrderModel.findOneAndUpdate(
+      {
+        user: _id,
+      },
+      {
+        $push: { orderDetails },
+      },
+      {
+        new: true,
+      }
+    );
 
-      return res.json({ order: addNewOrder });
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
+    if (!addNewOrder) {
+      const details = await OrderModel.create({
+        user: _id,
+        orderDetails: [orderDetails],
+      });
+      console.log(details);
+      return res.json({ order: details });
     }
+
+    return res.json({ order: addNewOrder });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
-);
+});
 
 export default Router;

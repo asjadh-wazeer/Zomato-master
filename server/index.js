@@ -18,6 +18,7 @@ import Order from "./API/Orders/index";
 import Review from "./API/Reviews/index";
 import User from "./API/User/index";
 import MailService from "./API/Mail/index";
+import Payments from "./API/Payments";
 
 //Database connection
 import ConnectDB from "./database/connection";
@@ -48,6 +49,7 @@ zomato.use("/order", Order);
 zomato.use("/review", Review);
 zomato.use("/user", User);
 zomato.use("/mail", MailService);
+zomato.use("/payments", Payments);
 
 zomato.listen(4000, () =>
   ConnectDB()

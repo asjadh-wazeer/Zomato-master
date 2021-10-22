@@ -5,7 +5,16 @@ import { BsShieldLockFill } from "react-icons/bs";
 import FoodItem from "../Components/Cart/FoodItem";
 import AddressList from "../Components/Checkout/AddressList";
 
+// redux
+import { useSelector, useDispatch } from "react-redux";
+import { orderPlaced } from "../Redux/Reducer/Order/order.action";
+
 function Checkout() {
+  const reduxStateCart = useSelector((globalStore) => globalStore.cart.cart);
+  const reduxStateUser = useSelector(
+    (globalStore) => globalStore.user.user.user
+  );
+  const dispatch = useDispatch();
   const [address] = useState([
     {
       name: "Home",
@@ -21,24 +30,36 @@ function Checkout() {
     },
   ]);
 
-  const [foods] = useState([
-    {
+  const reduxState = useSelector((globalStore) => globalStore.cart.cart);
+
+  const payNow = () => {
+    let options = {
+      key: "rzp_test_q1aD8S4CGOEb75",
+      amount:
+        reduxStateCart.reduce((acc, curVal) => acc + curVal.totalPrice, 0) *
+        100,
+      currency: "INR",
+      name: "Zomato Clone",
+      description: "Food Payment",
       image:
-        "https://b.zmtcdn.com/data/dish_photos/87c/153beb91af9f43e157f3d6fd6ea2587c.jpg?output-format=webp",
-      name: "Chilli Paneer Gravy",
-      price: "157.50",
-      quantity: 4,
-      _id: 1,
-    },
-    {
-      image:
-        "https://b.zmtcdn.com/data/dish_photos/87c/153beb91af9f43e157f3d6fd6ea2587c.jpg?output-format=webp",
-      name: "Chilli Paneer Gravy",
-      price: "157.50",
-      quantity: 2,
-      _id: 2,
-    },
-  ]);
+        "https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png",
+      handler: function (data) {
+        alert("Payment Done");
+        // console.log(data.razorpay_payment_id);
+        dispatch(orderPlaced(reduxStateCart, data.razorpay_payment_id));
+      },
+      prefill: {
+        name: reduxStateUser.fullName,
+        email: reduxStateUser.email,
+      },
+      theme: {
+        color: "#e23744",
+      },
+    };
+
+    let razorPay = new window.Razorpay(options);
+    razorPay.open();
+  };
 
   return (
     <div className="my-10 flex flex-col gap-3 items-center">
@@ -54,7 +75,7 @@ function Checkout() {
             </small>
           </div>
           <div className="my-4 h-32 px-4 h-full flex flex-col gap-2 w-full md:w-3/5">
-            {foods.map((food) => (
+            {reduxState.map((food) => (
               <FoodItem {...food} key={food._id} />
             ))}
           </div>
@@ -63,7 +84,10 @@ function Checkout() {
             <AddressList address={address} />
           </div>
         </div>
-        <button className="flex items-center gap-2 justify-center my-4 md:my-8 w-full px-4 md:w-4/5 px-0 h-14 text-white font-medium text-lg bg-zomato-400 rounded-lg">
+        <button
+          onClick={payNow}
+          className="flex items-center gap-2 justify-center my-4 md:my-8 w-full px-4 md:w-4/5 px-0 h-14 text-white font-medium text-lg bg-zomato-400 rounded-lg"
+        >
           Pay Securely <BsShieldLockFill />
         </button>
       </div>
