@@ -19,6 +19,4 @@ ENV RZR_PAY_ID=rzp_test_q1aD8S4CGOEb75
 ENV RZR_PAY_SECRET=7ZVrvejztwccSuJbgdLvMw76
 ENV PORT=4000
 
-RUN npm run build
-
 CMD ["npm", "run", "start"]
