@@ -22,9 +22,24 @@ UserSchema.methods.generateJwtToken = function () {
 };
 
 UserSchema.statics.findByEmailAndPassword = async ({ password, email }) => {
+  /**iduku equal
+   * const {email, password, fullName, phoneNumber} = req.body.credentials;
+  //   const checkUserByEmail = await UserModel.findOne({ email });
+  //   const checkUserByPhone = await UserModel.findOne({ phoneNumber });
+   
+   */
+
+
+
   // check whether email exists
   const user = await UserModel.findOne({ email });
   if (!user) throw new Error("User does not exist!!!");
+  /*iduku equal
+  //check whether email exists
+  //   if(checkUserByEmail || checkUserByPhone) {
+  //     return res.json({email: "User already exists........!"})
+  //   }
+  */
 
   // Compare password
   const doesPasswordMatch = await bcrypt.compare(password, user.password);
@@ -33,6 +48,7 @@ UserSchema.statics.findByEmailAndPassword = async ({ password, email }) => {
 
   return user;
 };
+
 
 UserSchema.statics.findByEmailAndPhone = async ({ email, phoneNumber }) => {
   //check whether email exists
@@ -45,6 +61,7 @@ UserSchema.statics.findByEmailAndPhone = async ({ email, phoneNumber }) => {
 
   return false;
 };
+//go to API-->auth
 
 UserSchema.pre("save", function (next) {
   const user = this;

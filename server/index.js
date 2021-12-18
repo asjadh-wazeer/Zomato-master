@@ -1,4 +1,6 @@
 require("dotenv").config();
+
+//import express
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -23,6 +25,7 @@ import Payments from "./API/Payments";
 //Database connection
 import ConnectDB from "./database/connection";
 
+//initialize the express
 const zomato = express();
 
 //passport config

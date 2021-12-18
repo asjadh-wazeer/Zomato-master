@@ -1,5 +1,7 @@
 // Library
 import express from "express";
+// import bcrypt from "bcryptjs";
+// import jwt from "jsonwebtoken";
 import passport from "passport";
 
 // Models
@@ -17,6 +19,48 @@ Params          none
 Access          Public
 Method          POST
 */
+
+Router.post("/signup", async (req, res) => {
+  try {
+  //   const {email, password, fullName, phoneNumber} = req.body.credentials;
+  //   const checkUserByEmail = await UserModel.findOne({ email });
+  //   const checkUserByPhone = await UserModel.findOne({ phoneNumber });
+
+  //   //check whether email exists
+  //   if(checkUserByEmail || checkUserByPhone) {
+  //     return res.json({email: "User already exists........!"})
+  //   }
+
+  //   //hash password
+  //   const bcryptSalt = await bcrypt.genSalt(8);
+  //   const hashedPassword = await bcrypt.hash(password, bcryptSalt);
+
+  //   //save to db
+  //   await UserModel.create({
+  //     ...req.body.credentials,
+  //     password : hashedPassword
+  //   })
+  //   //generate JWT auth token
+  //   const token = jwt.sign({user: {fullName, email}}, "ZomatoApp");
+  //   return res.status(200).json({token, status: "success"});
+  // } catch(error) {
+  //   return res.status(500).json({error: error.message})
+  // }
+
+
+
+
+     await ValidateSignup(req.body.credentials);
+     await UserModel.findByEmailAndPhone(req.body.credentials);
+     const newUser = await UserModel.create(req.body.credentials);
+     const token = newUser.generateJwtToken();
+     return res.status(200).json({ token, status: "success" });
+   } catch (error) {
+     return res.status(500).json({ error: error.message });
+   }
+});
+
+
 Router.post("/signup", async (req, res) => {
   try {
     await ValidateSignup(req.body.credentials);
